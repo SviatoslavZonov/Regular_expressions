@@ -1,4 +1,3 @@
-
 from pprint import pprint
 import re
 import csv
@@ -8,7 +7,7 @@ with open("phonebook_raw.csv", encoding="utf-8") as f:
   contacts_list = list(rows)
 pprint(contacts_list)
 
-def pars_contact(contact_list):
+def merged_contact(contact_list):
   pattern_number = r"(\+7|8)\s*\(*(\d{3})\)*\s*\-*(\d{3})\s*\-*(\d{2})\s*\-*(\d{2})"
   pattern_additional_number = r"\s*\(*(доб.)\s*(\d*)\)*\s*"
   pattern_name = (r"(^([А-я]+)\s([А-я]+)\s([А-я]+)\,\,)"
@@ -24,11 +23,13 @@ def pars_contact(contact_list):
 
 update_contacts_list = []
 for contact in contacts_list:
-    update_contacts_list.append(pars_contact(contact))
+    update_contacts_list.append(merged_contact(contact))
 
 finish_contacts_list = []
 contacts_list_length = len(update_contacts_list)
+
 dubl_records = []
+
 # объединяем дубли
 
 for i in range(contacts_list_length - 1):
@@ -43,6 +44,7 @@ for i in range(contacts_list_length - 1):
     finish_contacts_list.append(contact)
 
 # код записи файла в формате CSV
+
 with open("phonebook.csv", "w", encoding="utf-8") as f:
   datawriter = csv.writer(f, delimiter=',')
   datawriter.writerows(finish_contacts_list)
